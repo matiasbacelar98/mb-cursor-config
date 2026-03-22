@@ -8,21 +8,18 @@ Goals:
 - structure the request so it is easier for an LLM to execute
 - keep it practical and implementation-oriented
 
+Guidelines:
+
+- prefer clear and direct instructions
+- include explicit constraints when relevant (paths, scope, limits)
+- avoid adding questions or meta commentary
+- avoid introducing new requirements not present in the original request
+
 Output format:
 
 ## Improved Prompt
 
 <rewritten prompt>
-
-## Assumptions
-
-- <assumption 1>
-- <assumption 2>
-
-## Missing Details That May Matter
-
-- <detail 1>
-- <detail 2>
 
 Input:
 {{input}}
