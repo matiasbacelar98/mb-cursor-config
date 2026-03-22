@@ -10,11 +10,15 @@ This repository defines reusable commands and rules that improve consistency, cl
 
 ```
 .cursor/
-  commands/   # reusable commands (explicit actions you trigger manually)
-  rules/      # agent behavior and writing guidelines (static instructions)
+  commands/
+    global/   # reusable commands (explicit actions you trigger manually)
+  rules/
+    global/   # agent behavior and writing guidelines (static instructions)
   skills/     # dynamic workflows and playbooks the agent can follow to solve tasks
   hooks/      # optional automation (post-edit, etc.)
 ```
+
+The `global/` subdirectory holds configuration that applies across all projects. Project-specific commands and rules live at the top level of each project's `.cursor/` directory.
 
 ---
 
@@ -24,28 +28,28 @@ Commands are explicit actions you trigger manually.
 
 ### Available commands
 
-- `/commit-name`
+- `/global/commit-name`
   Generate a Conventional Commit message based on staged changes.
 
-- `/pr-readme`
-  Generate a pull request description from recent changes.
+- `/global/pr-readme`
+  Generate a pull request description from recent commits.
 
-- `/write-doc`
+- `/global/write-doc`
   Generate structured project documentation.
 
-- `/rewrite-prompt`
-  Rewrite a rough idea into a clear prompt for an LLM or coding agent.
+- `/global/prompt-rewriting`
+  Rewrite a rough idea into a clear, actionable prompt for an LLM or coding agent.
 
 ### Usage
 
 ```
-/command <input>
+/global/<command> <input>
 ```
 
 Example:
 
 ```
-/rewrite-prompt implement OCR fallback for PDFs with broken ligatures
+/global/prompt-rewriting implement OCR fallback for PDFs with broken ligatures
 ```
 
 ---
@@ -56,13 +60,16 @@ Rules define how the agent behaves.
 
 ### Current rules
 
-- `ai-behavior.mdc` (Always Apply)
+- `global/ai-behavior.mdc` (Always Apply)
   Defines global response style (clarity, simplicity, structure).
 
-- `documentation-style.mdc` (Apply Intelligently)
+- `global/language-enforcement.mdc` (Always Apply)
+  Keeps agent communication in English unless explicitly asked otherwise.
+
+- `global/documentation-style.mdc` (Apply Intelligently)
   Applies when generating documentation.
 
-- `pr-writing.mdc` (Apply Intelligently)
+- `global/pr-writing.mdc` (Apply Intelligently)
   Applies when generating PR descriptions.
 
 ### Rule types
@@ -91,25 +98,39 @@ Goal:
 
 ## 🧪 Usage in a Workspace
 
-This repository is meant to be used alongside project repositories:
+This repository is meant to be added to a Cursor workspace alongside your project repositories:
 
 ```
 workspace/
-├─ mb-cursor-config/
+├─ cursor-config/    # this repo (or a fork of it)
 ├─ frontend/
 └─ backend/
 ```
 
-Each project can define its own:
+The config repo acts as a central place for all Cursor agent configuration in the workspace. It lives in its own repository so it can be versioned, shared, and reused across teams or machines.
+
+### Organizing by scope
+
+Use subdirectories to separate global configuration from project-specific configuration:
 
 ```
-project/
+cursor-config/
   .cursor/
-    rules/
-    skills/
     commands/
-  docs/
+      global/       # applies to any project (commit-name, pr-readme, etc.)
+      frontend/     # frontend-specific commands
+      backend/      # backend-specific commands
+    rules/
+      global/       # universal agent behavior
+      frontend/     # frontend conventions (e.g., component patterns)
+      backend/      # backend conventions (e.g., API style)
+    skills/
+      global/
+      frontend/
+      backend/
 ```
+
+This keeps everything in one place while making it easy to scope commands and rules to specific projects.
 
 ---
 
