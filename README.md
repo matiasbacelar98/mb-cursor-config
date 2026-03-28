@@ -18,7 +18,7 @@ This repository defines reusable commands and rules that improve consistency, cl
   hooks/      # optional automation (post-edit, etc.)
 ```
 
-The `global/` subdirectory holds configuration that applies across all projects. Project-specific commands and rules live at the top level of each project's `.cursor/` directory.
+The `global/` subdirectory holds configuration that applies across all projects. Project-specific commands and rules etc should live in their own folder.
 
 ---
 
@@ -65,6 +65,12 @@ Rules define how the agent behaves.
 
 - `global/language-enforcement.mdc` (Always Apply)
   Keeps agent communication in English unless explicitly asked otherwise.
+
+- `global/solution-before-code.mdc` (Apply Intelligently)
+  Requires explaining the approach conceptually before implementing any solution.
+
+- `global/workflow-approval.mdc` (Apply Intelligently)
+  Requires user confirmation before proceeding with multi-step tasks.
 
 - `global/documentation-style.mdc` (Apply Intelligently)
   Applies when generating documentation.
