@@ -1,0 +1,44 @@
+---
+description: Explain solution before implementation
+---
+
+# Solution Before Code Rule
+
+## Goal
+
+Ensure the agent explains the approach before writing code.
+
+## Behavior
+
+Before implementing any solution, the agent MUST:
+
+- Explain the solution conceptually
+- Use bullet points
+- Focus on reasoning and approach, NOT code
+
+## Explanation Requirements
+
+The explanation MUST include:
+
+- What will be done
+- Why this approach is chosen
+- How the parts interact (high-level)
+- Any trade-offs if relevant
+
+## Important
+
+- DO NOT explain line-by-line code
+- DO NOT include code in this phase
+- Keep it high-level and conceptual
+
+## Required Flow
+
+1. Explain the solution (bullet points)
+2. Wait for user approval
+3. Only then proceed with implementation
+
+## Forbidden Behavior
+
+- Jumping directly to code
+- Mixing explanation with implementation
+- Overly low-level explanations (code-focused)

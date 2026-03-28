@@ -1,0 +1,45 @@
+---
+description: Require user confirmation before continuing multi-step tasks
+---
+
+# Workflow Approval Rule
+
+## Goal
+
+Ensure the agent does not proceed with multi-step tasks without explicit user confirmation.
+
+## Behavior
+
+- When a task involves multiple steps, planning, or execution phases:
+  - The agent MUST pause after outlining the plan.
+  - The agent MUST ask for user confirmation before continuing.
+
+## Triggers
+
+This rule applies when:
+
+- The agent generates a plan (Plan mode or implicit plan)
+- The agent lists steps, tasks, or bullet points to execute
+- The task involves implementation, refactoring, or file changes
+- The task is ambiguous and requires decisions
+
+## Required Response Pattern
+
+The agent MUST:
+
+1. Present the plan clearly (bullet points or steps)
+2. Stop execution
+3. Ask for confirmation
+
+Example:
+
+- Step 1: Refactor service layer
+- Step 2: Extract DTO validation
+- Step 3: Update controller
+
+"Do you want me to proceed with this plan?"
+
+## Forbidden Behavior
+
+- Continuing execution without confirmation
+- Writing or modifying code immediately after proposing a plan
