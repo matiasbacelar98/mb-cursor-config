@@ -1,148 +1,130 @@
 # mb-cursor-config
 
-Global configuration for Cursor AI agents.
-
-This repository defines reusable commands and rules that improve consistency, clarity, and developer workflows across projects.
+Cursor AI agent configuration: commands, rules, and skills that enforce consistent workflows across projects.
 
 ---
 
-## 🧩 Structure
+## Usage
 
-```
-.cursor/
-  commands/
-    global/   # reusable commands (explicit actions you trigger manually)
-  rules/
-    global/   # agent behavior and writing guidelines (static instructions)
-  skills/     # dynamic workflows and playbooks the agent can follow to solve tasks
-  hooks/      # optional automation (post-edit, etc.)
-```
-
-The `global/` subdirectory holds configuration that applies across all projects. Project-specific commands and rules etc should live in their own folder.
-
----
-
-## ⚙️ Commands
-
-Commands are explicit actions you trigger manually.
-
-### Available commands
-
-- `/global/commit-name`
-  Generate a Conventional Commit message based on staged changes.
-
-- `/global/pr-readme`
-  Generate a pull request description from recent commits.
-
-- `/global/write-doc`
-  Generate structured project documentation.
-
-- `/global/prompt-rewriting`
-  Rewrite a rough idea into a clear, actionable prompt for an LLM or coding agent.
-
-### Usage
-
-```
-/global/<command> <input>
-```
-
-Example:
-
-```
-/global/prompt-rewriting implement OCR fallback for PDFs with broken ligatures
-```
-
----
-
-## 📏 Rules
-
-Rules define how the agent behaves.
-
-### Current rules
-
-- `global/ai-behavior.mdc` (Always Apply)
-  Defines global response style (clarity, simplicity, structure).
-
-- `global/language-enforcement.mdc` (Always Apply)
-  Keeps agent communication in English unless explicitly asked otherwise.
-
-- `global/solution-before-code.mdc` (Apply Intelligently)
-  Requires explaining the approach conceptually before implementing any solution.
-
-- `global/workflow-approval.mdc` (Apply Intelligently)
-  Requires user confirmation before proceeding with multi-step tasks.
-
-- `global/documentation-style.mdc` (Apply Intelligently)
-  Applies when generating documentation.
-
-- `global/pr-writing.mdc` (Apply Intelligently)
-  Applies when generating PR descriptions.
-
-### Rule types
-
-- **Always Apply** → always active
-- **Apply Intelligently** → activated based on context
-- **Manual** → used only when explicitly referenced
-
----
-
-## 🧠 Design Philosophy
-
-This setup follows a simple separation:
-
-- **Commands** → trigger actions
-- **Rules** → define behavior
-- **(Future) Skills** → define workflows
-
-Goal:
-
-- reduce prompt repetition
-- improve output consistency
-- keep context clean and minimal
-
----
-
-## 🧪 Usage in a Workspace
-
-This repository is meant to be added to a Cursor workspace alongside your project repositories:
+Add this repo to your Cursor workspace alongside your project repositories:
 
 ```
 workspace/
-├─ cursor-config/    # this repo (or a fork of it)
+├─ mb-cursor-config/   # this repo
 ├─ frontend/
 └─ backend/
 ```
 
-The config repo acts as a central place for all Cursor agent configuration in the workspace. It lives in its own repository so it can be versioned, shared, and reused across teams or machines.
+Cursor merges `.cursor/` configuration from all repos in the workspace. This means rules, commands, and skills defined here are combined with any `.cursor/` configuration each project repo has of its own.
 
-### Organizing by scope
-
-Use subdirectories to separate global configuration from project-specific configuration:
-
-```
-cursor-config/
-  .cursor/
-    commands/
-      global/       # applies to any project (commit-name, pr-readme, etc.)
-      frontend/     # frontend-specific commands
-      backend/      # backend-specific commands
-    rules/
-      global/       # universal agent behavior
-      frontend/     # frontend conventions (e.g., component patterns)
-      backend/      # backend conventions (e.g., API style)
-    skills/
-      global/
-      frontend/
-      backend/
-```
-
-This keeps everything in one place while making it easy to scope commands and rules to specific projects.
+> **Keep this in mind when adding always-apply rules or large skills.** Everything marked `alwaysApply: true` here will load in every conversation across every project in the workspace — including projects that may not need it. Prefer Apply Intelligently rules and on-demand skills wherever possible.
 
 ---
 
-## 🚀 Notes
+## Structure
 
-- Keep rules small and focused to avoid context bloat
-- Prefer commands for explicit tasks
-- Add skills only when clear patterns emerge
-- Iterate based on real usage
+```
+.cursor/
+  commands/   # explicit actions triggered manually via /command
+  rules/      # agent behavior constraints (always-on or context-triggered)
+  skills/     # detailed playbooks the agent loads on demand
+```
+
+---
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `/approve` | Approve the pending commit group — agent executes all commits in the group |
+| `/create-pr` | Generate a PR description and open the PR on GitHub |
+| `/pr-review` | Fetch a GitHub PR and run a structured code review |
+
+### `/create-pr` usage
+
+```
+/create-pr branch:'feature/my-plan'
+/create-pr branch:'feature/my-plan' base:'develop'
+/create-pr branch:'feature/my-plan' title:'Add user authentication'
+/create-pr branch:'feature/my-plan' base:'develop' title:'Add user authentication'
+```
+
+### `/pr-review` usage
+
+```
+/pr-review https://github.com/owner/repo/pull/123
+```
+
+---
+
+## Rules
+
+### Always Apply
+
+These rules are loaded in every conversation regardless of context.
+
+| Rule | Description | Est. tokens |
+|------|-------------|-------------|
+| `commit-approval.mdc` | Require `/approve` before executing any logical commit group | ~171 |
+| `feature-branch.mdc` | Never commit to main/master — always work on a feature branch | ~129 |
+| `engagement-preferences.mdc` | How the agent should engage: confirm intentions, ask before assuming, prefer multiple choice | ~112 |
+| `commit-style.mdc` | Conventional commits format, max 72 chars first line | ~79 |
+| **Total** | | **~491 tokens** |
+
+### Apply Intelligently
+
+These rules are loaded only when the agent determines they are relevant.
+
+| Rule | Trigger | Est. tokens |
+|------|---------|-------------|
+| `accessibility.mdc` | Creating, editing, or reviewing UI components, forms, or interactive elements | ~251 |
+| `testing.mdc` | Writing, editing, or reviewing tests | ~199 |
+| `documentation-style.mdc` | Generating or updating documentation | ~129 |
+
+---
+
+## Skills
+
+Skills are detailed playbooks loaded on demand. They are never loaded unless the agent determines the context matches.
+
+| Skill | Trigger | Est. tokens |
+|-------|---------|-------------|
+| `incremental-implementation` | Actively implementing a task touching more than one file | ~2,384 |
+| `planning-and-task-breakdown` | Breaking work into implementable tasks from a spec or requirement | ~2,198 |
+| `code-review-and-quality` | Reviewing code — PR, agent output, or conversational request | ~675 |
+| `security-and-hardening` | Handling user input, auth, data storage, or external integrations in JS/web projects | ~553 |
+| `frontend-ui-engineering` | Building or reviewing frontend UI components | ~539 |
+| `api-and-interface-design` | Designing or reviewing APIs and interfaces | ~496 |
+| `performance-optimization` | Performance requirements or suspected regressions in JS/web projects | ~433 |
+| `debugging-and-error-recovery` | Investigating bugs, errors, or unexpected behavior | ~403 |
+
+---
+
+## Token Budget
+
+The following estimates use Sonnet 4.6 (200,000 token context window) as a reference point.
+
+| Category | Tokens | % of context |
+|----------|--------|--------------|
+| Always-apply rules | ~491 | 0.25% |
+| Apply Intelligently rules (if all triggered) | ~579 | 0.29% |
+| Skills (worst case: planning + incremental loaded together) | ~4,582 | 2.29% |
+| **Max realistic overhead** | **~5,652** | **~2.83%** |
+
+Rules are never a concern. Even with the two largest skills loaded simultaneously, overhead stays under 3% of the context window.
+
+---
+
+## Workflow
+
+See [WORKFLOW.md](WORKFLOW.md) for the full implementation workflow: planning, implementing with human-in-the-loop commit approval, testing, security/performance review, and shipping.
+
+---
+
+## Design Philosophy
+
+- **Commands** → explicit actions you trigger
+- **Rules** → behavioral constraints on the agent
+- **Skills** → detailed execution playbooks
+
+Goals: reduce prompt repetition, improve consistency, keep context minimal.
