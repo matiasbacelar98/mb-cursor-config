@@ -1,0 +1,13 @@
+---
+description: Always work on feature branches, never commit directly to main or master.
+alwaysApply: true
+---
+
+# Feature Branch Workflow
+
+- Never commit directly to `main` or `master`
+- Before starting any work, check the current branch with `git branch --show-current`
+- If on `main` or `master`, create and switch to a feature branch first:
+  `git checkout -b feature/<short-description>`
+- Use kebab-case for branch names (e.g. `feature/user-auth`, `fix/login-redirect`)
+- One branch per logical change or plan

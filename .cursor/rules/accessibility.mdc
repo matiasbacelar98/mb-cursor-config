@@ -1,0 +1,30 @@
+---
+description: Accessibility standards for UI components. Use when creating, editing, or reviewing UI components, forms, or interactive elements.
+alwaysApply: false
+---
+
+# Accessibility Standards
+
+When creating UI components:
+
+- Use semantic HTML (nav, main, article, section, button, etc.)
+- Include ARIA attributes where semantic HTML isn't sufficient
+- Ensure keyboard navigation works (tab order, focus states, shortcuts)
+- Check color contrast meets WCAG AA minimum (4.5:1 for text)
+- Handle focus management for modals and dynamic content
+- Respect reduced motion preferences
+- Test with screen readers in mind
+
+For forms:
+
+- Label all inputs with visible labels or aria-label
+- Group related inputs with fieldset/legend
+- Show clear error messages associated with inputs
+- Indicate required fields
+
+For interactive elements:
+
+- Use button for actions, a for navigation
+- Ensure click targets are at least 44x44px
+- Provide visual focus indicators
+- Support both mouse and keyboard interaction

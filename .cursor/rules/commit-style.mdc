@@ -1,0 +1,16 @@
+---
+alwaysApply: true
+---
+
+# Commit Message Style
+
+Use conventional commits format:
+
+- feat: new feature
+- fix: bug fix
+- refactor: code restructuring
+- docs: documentation changes
+- test: test additions or changes
+
+Keep the first line under 72 characters.
+Include context in the body when the change isn't obvious.

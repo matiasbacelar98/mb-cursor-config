@@ -1,0 +1,26 @@
+---
+description: Testing standards for unit, component, and API tests. Use when writing, editing, or reviewing tests.
+---
+
+# Testing Standards
+
+When writing tests:
+
+- Use descriptive test names that explain what's being tested
+- Follow Arrange-Act-Assert pattern
+- Test edge cases (empty arrays, null values, boundary conditions)
+- Mock external dependencies (API calls, database queries)
+- Avoid testing implementation details
+
+For React components:
+
+- Test user interactions, not internal state
+- Use Testing Library queries in order: getByRole > getByLabelText > getByText
+- Verify accessibility (screen reader text, keyboard navigation)
+
+For API endpoints:
+
+- Test success cases and error cases
+- Verify authentication/authorization
+- Check input validation
+- Test rate limiting if applicable

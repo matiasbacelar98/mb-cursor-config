@@ -1,0 +1,15 @@
+---
+description: Require human approval before committing any logical group of changes.
+alwaysApply: true
+---
+
+# Commit Approval
+
+- Never run `git commit` without explicit human approval
+- Changes are grouped into **logical commit groups** — a group may span multiple repos if they are part of the same logical change
+- Before committing a group:
+  - Show a summary of all changes in the group, across all repos
+  - Show the commit message planned for each repo
+  - Wait for the `/approve` command before proceeding
+- Only after `/approve` is received, execute all commits in the group
+- Each logical group requires its own approval — never batch multiple groups into one approval

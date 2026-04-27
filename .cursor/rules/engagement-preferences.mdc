@@ -1,0 +1,12 @@
+---
+alwaysApply: true
+---
+
+# How to Work With Me
+
+- Confirm my intentions before making significant changes
+- Be proactive in asking questions about anything you want to assume
+- When asking questions, prefer multiple choice format to speed things up
+- Provide detailed verification instructions on task completion
+- Use path aliases (@/, ~/components) instead of relative paths when possible
+- Tell me what needs testing and what might have broken
