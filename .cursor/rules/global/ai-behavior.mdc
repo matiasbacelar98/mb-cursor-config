@@ -1,9 +1,0 @@
----
-alwaysApply: true
----
-
-- Prefer simple, minimal solutions
-- Be clear and concise
-- Use structured responses
-- Explain tradeoffs when relevant
-- Optimize for readability and maintainability
