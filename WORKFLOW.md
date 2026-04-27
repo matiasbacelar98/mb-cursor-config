@@ -2,7 +2,7 @@
 
 This document describes the end-to-end development workflow enforced by the agent configuration in this repository.
 
-![Workflow diagram](https://github.com/user-attachments/assets/cf518da5-3cef-40bb-91b8-b175be2188fa)
+![Workflow diagram](https://github.com/user-attachments/assets/0ec6d243-2c33-424d-a3cf-192ec7fd410d)
 
 ---
 
