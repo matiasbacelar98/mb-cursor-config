@@ -6,18 +6,15 @@ Cursor AI agent configuration: commands, rules, and skills that enforce consiste
 
 ## Usage
 
-Add this repo to your Cursor workspace alongside your project repositories:
+Run the install command to download rules, skills, and commands to your user-level Cursor config (`~/.cursor/`). They'll apply across every project automatically — no need to clone this repo into your workspace.
 
-```
-workspace/
-├─ mb-cursor-config/   # this repo
-├─ frontend/
-└─ backend/
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/matiasbacelar98/mb-cursor-config/main/install.sh)
 ```
 
-Cursor merges `.cursor/` configuration from all repos in the workspace. This means rules, commands, and skills defined here are combined with any `.cursor/` configuration each project repo has of its own.
+Re-run the same command anytime to pull the latest version.
 
-> **Keep this in mind when adding always-apply rules or large skills.** Everything marked `alwaysApply: true` here will load in every conversation across every project in the workspace — including projects that may not need it. Prefer Apply Intelligently rules and on-demand skills wherever possible.
+> **Keep this in mind when adding always-apply rules or large skills.** Everything marked `alwaysApply: true` will load in every conversation across every project. Prefer Apply Intelligently rules and on-demand skills wherever possible.
 
 ---
 
